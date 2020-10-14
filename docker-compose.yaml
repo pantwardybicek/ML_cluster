@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: api
+    container_name: api
+    networks:
+      - ml_network
+    ports: [8008:8000]
+
+  machine1:
+    build:
+      context: ./ml_machine
+      dockerfile: Dockerfile
+    image: machine1
+    container_name: machine1
+    environment:
+      machine_number: 1
+    volumes:
+      - ./data:/var/ml_data
+    networks:
+      - ml_network
+    ports: [8001:8000]
+
+volumes:
+  data:
+
+networks:
+  ml_network:

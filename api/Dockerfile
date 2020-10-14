@@ -1,0 +1,10 @@
+FROM 'python:3.8.6-buster'
+WORKDIR /api
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+COPY api.py api.py
+COPY app_logic.py app_logic.py
+COPY ./templates ./templates
+COPY cluster_report.txt cluster_report.txt
+EXPOSE 8008
+CMD ["python", "api.py"]
