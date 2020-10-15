@@ -6,4 +6,4 @@ baserack_trainset_split : {False,
                             len must be equal to number of base rack estimators.}
 '''
 Setup = {'dont_train_test_split': True,
-         'baserack_trainset_split': ((0, 3), (12, 15))}
+         'baserack_trainset_split': False}

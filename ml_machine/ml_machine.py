@@ -18,6 +18,7 @@ from threading import Thread
 import numpy as np
 
 
+m=False #provides a variable for machine_api
 
 
 

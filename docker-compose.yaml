@@ -10,6 +10,8 @@ services:
     networks:
       - ml_network
     ports: [8008:8000]
+    volumes:
+      - ./data:/var/ml_data
 
   machine1:
     build:
@@ -24,6 +26,33 @@ services:
     networks:
       - ml_network
     ports: [8001:8000]
+
+  machine2:
+    build:
+      context: ./ml_machine2
+      dockerfile: Dockerfile
+    image: machine2
+    container_name: machine2
+    environment:
+      machine_number: 2
+    volumes:
+      - ./data:/var/ml_data
+    networks:
+      - ml_network
+    ports: [8002:8000]
+  machine3:
+    build:
+      context: ./ml_machine3
+      dockerfile: Dockerfile
+    image: machine3
+    container_name: machine3
+    environment:
+      machine_number: 3
+    volumes:
+      - ./data:/var/ml_data
+    networks:
+      - ml_network
+    ports: [8003:8000]
 
 volumes:
   data:

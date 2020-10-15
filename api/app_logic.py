@@ -2,14 +2,15 @@ import json
 import requests
 from flask import render_template
 
+report_path = '/var/ml_data/cluster_report.txt'
 
 def update_container_report(container, container_params):
-    with open('cluster_report.txt', 'r', encoding='utf-8') as file:
+    with open(report_path, 'r', encoding='utf-8') as file:
         all = json.loads(file.read())
         if len(all) == 0:
             all = {'cluster': dict()}
         cluster = all['cluster']
-    with open('cluster_report.txt', 'w', encoding='utf-8') as file:
+    with open(report_path, 'w', encoding='utf-8') as file:
         if container in cluster:
             if len(container_params) > 0:
                 cluster[container].update(container_params)
@@ -31,7 +32,7 @@ def get_logic(container, request):
 
 
 def get_report(container):
-    with open('cluster_report.txt', 'r', encoding='ASCII') as file:
+    with open(report_path, 'r', encoding='ASCII') as file:
         j = json.loads(file.read())
         if container == 'all':
             return render_template('cluster.html', cluster=json.dumps(j, indent=3, sort_keys=True, separators=(", ", " : ")))

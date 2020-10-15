@@ -17,7 +17,7 @@ Settings ajustable are in 2 files:
 -ml_setup: some additional parameters
 
 Directory data is supposed to contain data files - separately train data set and target data set
-This directory will be mapped to /var/data directory in every machine container.
+This directory will be mapped to /var/ml_data directory in every machine container.
 Script collecting data is in ml_machine.main [first line] if needs adjusting
 
 docker-compose file creates a single container
