@@ -7,4 +7,5 @@ COPY app_logic.py app_logic.py
 COPY ./templates ./templates
 COPY cluster_report.txt cluster_report.txt
 EXPOSE 8008
-CMD ["python", "api.py"]
+CMD ["mkdir /var/ml_data"]
+CMD ["python", "api.py", ">", "/var/ml_data/api.out"]
