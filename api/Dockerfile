@@ -5,7 +5,7 @@ RUN pip install -r requirements.txt
 COPY api.py api.py
 COPY app_logic.py app_logic.py
 COPY ./templates ./templates
-COPY cluster_report.txt cluster_report.txt
+COPY ./static ./static
 EXPOSE 8008
 CMD ["mkdir /var/ml_data"]
 CMD ["python", "api.py", ">", "/var/ml_data/api.out"]

@@ -6,6 +6,12 @@ def report(params: dict):
     api_url = 'http://api:8000/' + str(os.environ['machine_number'])
     requests.post(api_url, json=params)
 
+
+def report_metrics(params: dict):
+    api_url = 'http://api:8000/' + str(os.environ['machine_number']) + 'metrics'
+    requests.post(api_url, json=params)
+
+
 from ml_engine import Engine
 from ml_rack import Rack
 from ml_turntable import Turntable
@@ -24,6 +30,7 @@ m=False #provides a variable for machine_api
 
 class Machine (Thread):
     def __init__ (self, engine, setup, data):
+        self.id = os.environ['machine_number']
         self.classifiers = engine[0]
         self.classifiers_parameters = engine[1]
         self.data =list()
@@ -38,7 +45,7 @@ class Machine (Thread):
 
     def run (self):
         self.learn()
-        return message
+        return 'DONE'
 
     def learn(self):
         report({'machine_status': 'preparing'})
@@ -49,13 +56,10 @@ class Machine (Thread):
         X, y = self.Pre.train()
         report({'turntable_length': len(self.T.turntable)})
         self.W = Work(self, X, y)
-        report({'metrics': self.W.metrics})
-        report({'machine_status': 'job_completed',
-                'metrics':self.W.metrics})
+        report({'machine_status': 'job_completed'})
 
 
-
-def main ():
+def main():
     data = [np.load('/var/ml_data/' + x, allow_pickle=True) for x in os.listdir('/var/ml_data') if x[-3:] == 'npy']
     machine_number = os.environ['machine_number']
     report({'machine_number': machine_number})

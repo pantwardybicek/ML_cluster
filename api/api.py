@@ -2,6 +2,8 @@ from flask import Flask, request, render_template
 import json
 import app_logic
 
+report_path = '/var/ml_data/cluster_report.txt'
+
 app = Flask(__name__)
 '''
 get.app/all
@@ -14,8 +16,11 @@ post.app/1 # removes all data about container'''
 def indeks():
     return app_logic.get_logic('all', request)
 
+@app.route('/table/<container>', methods=['GET'])
+def tables(container=None):
+    return app_logic.get_table(container)
 
-@app.route('/<container>', methods = ['GET','POST'])
+@app.route('/<container>', methods=['GET', 'POST'])
 def sub(container=None):
     if request.method == 'GET':
         return app_logic.get_logic(container, request)
@@ -28,7 +33,7 @@ def sub(container=None):
         return "HTTP METHOD NOT ACCEPTED"
 
 if __name__ == '__main__':
-    with open('cluster_report.txt', 'w', encoding='ASCII') as file:
+    with open(report_path, 'w', encoding='ASCII') as file:
         file.write('{"cluster":{}}')
     app.run(host='0.0.0.0', port = 8000)
 

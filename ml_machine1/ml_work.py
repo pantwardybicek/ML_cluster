@@ -1,5 +1,5 @@
 from sklearn.metrics import accuracy_score, precision_score, f1_score, recall_score
-from ml_machine import report
+from ml_machine import report, report_metrics
 
 class Work():
     def __init__ (self, machine, X, y):
@@ -23,8 +23,9 @@ class Work():
         base_result = self.R.base_predict(X)
         report({'machine_status': 'fitting final rack'})
         self.R.final_fit(base_result, y)
-        report({'machine_status': 'performing metrics calculation'})
+        report({'machine_status': 'final rack predicting'})
         self.result = self.R.final_predict(base_result)
+        report({'machine_status': 'performing metrics calculation'})
         self.metrics.append(self.count_efficacy(turn_no, turn_params, y))
 
 
@@ -33,14 +34,13 @@ class Work():
         prec_sc = precision_score(true_y, self.result)
         f1_sc = f1_score(true_y, self.result)
         recall_sc = recall_score(true_y, self.result)
-        report({(str(turn_no)+'_turn_results'):{'turn_params':turn_params,
-                                                'accuracy_score':acc_sc,
-                                                'precision_score':prec_sc,
-                                                'recall_score':recall_sc,
-                                                'f1':f1_sc}})
-        return ({'turn_no': turn_no,
-                 'turn_params': turn_params,
-                 'accuracy':acc_sc,
-                 'precision':prec_sc,
-                 'recall_score': recall_sc,
-                 'f1':f1_sc})
+        metrics = {'turn_no': str(turn_no),
+                   'machine_id':self.M.id,
+                   'turn_params': str(turn_params),
+                   'accuracy_score': acc_sc,
+                   'precision_score': prec_sc,
+                   'recall_score': recall_sc,
+                   'f1': f1_sc
+                   }
+        report_metrics(metrics)
+        return metrics
